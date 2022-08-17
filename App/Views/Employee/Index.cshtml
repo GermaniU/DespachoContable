@@ -1,0 +1,105 @@
+﻿@using Contracts
+@model IEnumerable<EmployeeViewModel>
+
+@{
+    ViewData["Title"] = "Listado de Empleados";
+}
+
+<div class="btn-toolbar mb-3 mb-5" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="input-group me-4">
+            @*<a asp-action="Search" class="btn btn-light">Buscar</a>*@
+        <button type="button" class="btn btn-secondary border" data-bs-toggle="modal" data-bs-target="#modalBusqueda">
+            Búsqueda
+        </button>
+    </div>
+    <div class="input-group me-4">
+        <a asp-action="Create" class="btn btn-success border">Crear</a>
+    </div>
+    <div class="input-group me-4">
+        <a asp-action="Index" class="btn btn-info border">Actualizar</a>
+    </div>
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               <p>Nombre Completo</p>
+            </th>
+
+            <th>
+               <p>Email</p>
+            </th>
+            <th>
+               <p>Puesto</p>
+            </th>
+            <th>
+              <p>RFC</p>
+            </th>
+            <th>
+              <p>Fecha de Alta</p>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreCompleto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Puesto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rfc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaAlta)
+            </td>           
+            <td>
+                   <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> |
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalConfirm">
+                        Eliminar
+                    </button>
+
+            </td>
+
+             <div class="modal fade" id="modalConfirm" tabindex="-1" aria-labelledby="modalConfirm" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">¿Seguro que desea dar de baja al Empleado?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            @*  <div class="modal-body">
+                        ...
+                        </div>*@
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                <a asp-action="Unsubscribe" asp-route-id="@item.Id" class="btn btn-success">Aceptar</a> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </tr>
+}
+    </tbody>
+</table>
+@{
+    var ModelFilter = new EmployeeFiltersViewModel();
+}
+@{
+    Html.RenderPartial("_ModalBusqueda",ModelFilter);
+}
+
+ @section Scripts {
+
+   <script type="text/javascript" src="~/js/Employee.js"></script>
+
+ }
